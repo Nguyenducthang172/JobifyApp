@@ -1,16 +1,16 @@
 import * as dotenv from "dotenv";
 dotenv.config();
+import 'express-async-errors';
 import express from "express";
 import morgan from "morgan";
 const app = express();
 import mongoose from "mongoose";
-import { body, validationResult } from "express-validator";
 
 
 
 // router
 import jobRouter from "./routers/jobRouter.js";
-
+import authRouter from "./routers/authRouter.js";
 // middlware
 import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware.js";
 
@@ -26,6 +26,7 @@ app.get("/", (req, res) => {
 
 
 app.use("/api/v1/jobs", jobRouter);
+app.use("/api/v1/auth", authRouter);
 
 app.use("*", (req, res) => {
   res.status(404).json({ msg: "Not Found" });

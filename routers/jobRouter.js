@@ -16,8 +16,8 @@ import { validateIdPrama, validateJobInput } from "../middleware/validationMiddl
 router.route("/").get(getAllJobs).post(validateJobInput, createJob);
 router
   .route("/:id")
-  .get(getJob)
-  .patch(validateJobInput,validateIdPrama,updateJob)
+  .get(validateIdPrama, getJob)
+  .patch(validateIdPrama, validateJobInput, updateJob)
   .delete(validateIdPrama, deleteJob);
 
 export default router;
