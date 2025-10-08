@@ -5,7 +5,7 @@ import express from "express";
 import morgan from "morgan";
 const app = express();
 import mongoose from "mongoose";
-
+import cookieParser from "cookie-parser";
 
 
 // router
@@ -13,11 +13,13 @@ import jobRouter from "./routers/jobRouter.js";
 import authRouter from "./routers/authRouter.js";
 // middlware
 import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware.js";
+import { authenticateUser } from "./middleware/authMiddleware.js";
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
+app.use(cookieParser());
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -25,7 +27,7 @@ app.get("/", (req, res) => {
 });
 
 
-app.use("/api/v1/jobs", jobRouter);
+app.use("/api/v1/jobs", authenticateUser, jobRouter);
 app.use("/api/v1/auth", authRouter);
 
 app.use("*", (req, res) => {
